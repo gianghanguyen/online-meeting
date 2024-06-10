@@ -10,10 +10,10 @@ import { UserResponseDto } from './dto/user.response.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @ApiOperation({ summary: 'Get users profile' })
+  @ApiOperation({ summary: 'Create user' })
   @ApiResponse({
     status: 200,
-    description: 'Get users profile',
+    description: 'Create user',
     type: SuccessResponse<UserResponseDto>,
   })
   @Post()
