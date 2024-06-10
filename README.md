@@ -8,6 +8,11 @@
 $ yarn install
 ```
 
+## Create and run database
+```
+docker-compse -d up
+```
+
 ## Running the app
 
 ```bash
@@ -32,4 +37,12 @@ $ yarn run test:e2e
 
 # test coverage
 $ yarn run test:cov
+```
+## prisma
+
+```
+npx prisma migrate dev --name init
+
+yarn add @prisma/client
+
 ```
