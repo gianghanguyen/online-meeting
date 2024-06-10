@@ -19,7 +19,7 @@ yarn start:dev
 
 ```
 ## Api document
-[a link](http://localhost:3001/api#/)
+[http://localhost:3001/api#/](http://localhost:3001/api#/)
 
 ## prisma
 
