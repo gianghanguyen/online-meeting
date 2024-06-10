@@ -10,34 +10,17 @@ $ yarn install
 
 ## Create and run database
 ```
-docker-compse -d up
+docker-compose -d up
 ```
 
 ## Running the app
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
 ```
+yarn start:dev
 
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
 ```
+## Api document
+[a link](http://localhost:3001/api#/)
+
 ## prisma
 
 ```
