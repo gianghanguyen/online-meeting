@@ -19,7 +19,7 @@ import { SuccessResponse } from 'src/common/response';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('/users')
-@ApiTags('User')
+@ApiTags('[User] User')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 export class UserController {

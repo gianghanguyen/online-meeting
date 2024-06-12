@@ -4,10 +4,14 @@ import { UserCreateDto } from './dto/user.create.dto';
 import * as bcrypt from 'bcrypt';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserResponseDto } from './dto/user.response.dto';
+import { MailService } from '../../../mail/mail.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private mailService: MailService,
+  ) {}
 
   async createUser(userCreateDto: UserCreateDto): Promise<UserResponseDto> {
     const invalidEmail = await this.prismaService.user.count({
@@ -41,7 +45,11 @@ export class UserService {
       },
     });
 
-    return user;
     //TODO: send password to user email
+    const mailSubject = '[On-meeting]Admin has added your account';
+    const mailBody = 'Your password: ' + password;
+    await this.mailService.sendEmail(user.email, mailSubject, mailBody, null);
+
+    return user;
   }
 }

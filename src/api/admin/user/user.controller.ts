@@ -6,7 +6,7 @@ import { SuccessResponse } from 'src/common/response';
 import { UserResponseDto } from './dto/user.response.dto';
 
 @Controller('admins/users')
-@ApiTags('[Admin]Users')
+@ApiTags('[Admin] User')
 export class UserController {
   constructor(private userService: UserService) {}
 
