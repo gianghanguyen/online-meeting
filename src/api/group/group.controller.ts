@@ -23,6 +23,7 @@ import { EmailSendDto } from './dto/request/email.send.dto';
 import { GroupAddUserDto } from './dto/request/group.add.user.dto';
 import { UserResponseDto } from './dto/response/user.response.dto';
 import { GroupInfoDto } from './dto/response/group.info.dto';
+import { ListUsersResponseDto } from './dto/response/listUsers.response.dto';
 
 @Controller('/groups')
 @ApiBearerAuth()
@@ -56,7 +57,7 @@ export class GroupController {
   async getListUsersInGroup(
     @Request() request,
     @Param('id') groupId: string,
-  ): Promise<SuccessResponse<UserResponseDto[]>> {
+  ): Promise<SuccessResponse<ListUsersResponseDto>> {
     const userId = request.user.id;
     const listUsersInGroup = await this.groupService.getListUsersInGroup(
       userId,

@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GroupResponseDto } from './dto/response/group.response.dto';
@@ -12,6 +13,7 @@ import { EmailSendDto } from './dto/request/email.send.dto';
 import { GroupAddUserDto } from './dto/request/group.add.user.dto';
 import { UserResponseDto } from './dto/response/user.response.dto';
 import { GroupInfoDto } from './dto/response/group.info.dto';
+import { ListUsersResponseDto } from './dto/response/listUsers.response.dto';
 
 @Injectable()
 export class GroupService {
@@ -99,7 +101,7 @@ export class GroupService {
   async getListUsersInGroup(
     userId: number,
     groupId: number,
-  ): Promise<UserResponseDto[]> {
+  ): Promise<ListUsersResponseDto> {
     const userInGroup = await this.prismaService.useringroup.findUnique({
       where: {
         userId_groupId: {
@@ -126,19 +128,35 @@ export class GroupService {
             avtUrl: true,
           },
         },
+        isOwner: true,
       },
     });
 
-    const listUsers: UserResponseDto[] = listUsersInGroup.map(
-      (userInGroup) => ({
-        id: userInGroup.user.id,
-        name: userInGroup.user.name,
-        email: userInGroup.user.email,
-        avtUrl: userInGroup.user.avtUrl,
-      }),
-    );
+    let owner: UserResponseDto;
+    const members: UserResponseDto[] = [];
 
-    return listUsers;
+    listUsersInGroup.forEach((user) => {
+      if (user.isOwner)
+        owner = {
+          id: user.user.id,
+          name: user.user.name,
+          email: user.user.email,
+          avtUrl: user.user.avtUrl,
+        };
+      else {
+        members.push({
+          id: user.user.id,
+          name: user.user.name,
+          email: user.user.email,
+          avtUrl: user.user.avtUrl,
+        });
+      }
+    });
+
+    return {
+      owner: owner,
+      members: members,
+    };
   }
 
   async sendInviteEmail(
@@ -161,15 +179,25 @@ export class GroupService {
       },
     });
 
-    const sender = await this.prismaService.user.findUnique({
+    const sender = await this.prismaService.useringroup.findUnique({
       where: {
-        id: senderId,
+        userId_groupId: {
+          userId: senderId,
+          groupId: emaiSendDto.groupId,
+        },
+      },
+      select: {
+        user: true,
       },
     });
 
+    if (!sender) {
+      throw new UnauthorizedException('No access to this group');
+    }
+
     const inviteLink = process.env.CLIENT_URL + '/' + inviteGroup.token;
 
-    const body = sender.name + ' has sent you an invite: ' + inviteLink;
+    const body = sender.user.name + ' has sent you an invite: ' + inviteLink;
 
     const subject = 'An invite from On-meeting';
     await this.mailService.sendEmail(receiver.email, subject, body, inviteLink);

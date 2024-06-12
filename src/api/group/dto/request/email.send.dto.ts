@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsNumber } from 'class-validator';
 
 export class EmailSendDto {
   @ApiProperty({ example: 'username@gmail.com' })
@@ -7,5 +7,6 @@ export class EmailSendDto {
   email: string;
 
   @ApiProperty({ example: '1' })
+  @IsNumber()
   groupId: number;
 }
