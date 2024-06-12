@@ -8,4 +8,7 @@ export class GroupInfoDto {
 
   @ApiProperty()
   description: string;
+
+  @ApiProperty()
+  avtUrl: string;
 }

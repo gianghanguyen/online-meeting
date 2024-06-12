@@ -22,6 +22,7 @@ import { GroupCreateDto } from './dto/request/group.create.dto';
 import { EmailSendDto } from './dto/request/email.send.dto';
 import { GroupAddUserDto } from './dto/request/group.add.user.dto';
 import { UserResponseDto } from './dto/response/user.response.dto';
+import { GroupInfoDto } from './dto/response/group.info.dto';
 
 @Controller('/groups')
 @ApiBearerAuth()
@@ -62,6 +63,22 @@ export class GroupController {
       Number(groupId),
     );
     return SuccessResponse.make(listUsersInGroup);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get group info by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Get group info successful',
+    type: SuccessResponse<GroupInfoDto>,
+  })
+  async getGroupInfo(
+    @Request() request,
+    @Param('id') id: string,
+  ): Promise<SuccessResponse<GroupInfoDto>> {
+    const userId = request.user.id;
+    const groupInfo = await this.groupService.getGroupInfo(userId, Number(id));
+    return SuccessResponse.make(groupInfo);
   }
 
   @Post()

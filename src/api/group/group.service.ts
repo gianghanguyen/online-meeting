@@ -11,6 +11,7 @@ import { MailService } from 'src/mail/mail.service';
 import { EmailSendDto } from './dto/request/email.send.dto';
 import { GroupAddUserDto } from './dto/request/group.add.user.dto';
 import { UserResponseDto } from './dto/response/user.response.dto';
+import { GroupInfoDto } from './dto/response/group.info.dto';
 
 @Injectable()
 export class GroupService {
@@ -68,6 +69,31 @@ export class GroupService {
     });
 
     return newGroup;
+  }
+
+  async getGroupInfo(userId: number, groupId: number): Promise<GroupInfoDto> {
+    const userInGroup = await this.prismaService.useringroup.findUnique({
+      where: {
+        userId_groupId: {
+          userId: userId,
+          groupId: groupId,
+        },
+      },
+      select: {
+        group: true,
+      },
+    });
+
+    if (!userInGroup) {
+      throw new ForbiddenException('No access to this group');
+    }
+
+    return {
+      id: userInGroup.group.id,
+      name: userInGroup.group.name,
+      description: userInGroup.group.description,
+      avtUrl: userInGroup.group.avtUrl,
+    };
   }
 
   async getListUsersInGroup(
