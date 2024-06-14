@@ -169,7 +169,7 @@ export class GroupService {
       },
     });
 
-    if (receiver.deactivate || !receiver) {
+    if (!receiver || receiver.deactivate) {
       throw new BadRequestException('User not found');
     }
 

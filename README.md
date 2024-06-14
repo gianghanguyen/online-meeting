@@ -29,3 +29,9 @@ npx prisma migrate dev --name init
 yarn add @prisma/client
 
 ```
+
+## Create database
+```
+docker exec -it 42f3249c9b29 psql -U user
+CREATE DATABASE meeting_app;
+```
