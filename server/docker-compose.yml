@@ -1,0 +1,16 @@
+version: '3.8'
+services: 
+  postgres:
+    image: postgres:latest
+    volumes:
+      - postgresdb:/var/lid/postgres
+    environment:
+      POSTGRES_DATABASE: meeting_app
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
+    ports:
+    - "5434:5432"
+
+volumes:
+  postgresdb:
+    driver: local

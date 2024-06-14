@@ -1,0 +1,60 @@
+/* src/pages/HomePage.css */
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  padding: 20px;
+}
+
+
+.home-title {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 50px;
+  font-weight: bolder;
+  margin-bottom: 30px;
+}
+
+.home-subtitle {
+  font-family: "Montserrat", sans-serif;
+  position: relative;
+  font-size: 25px;
+  font-weight: normal;
+  margin-top: -10px;
+  /* margin-bottom: 30px; */
+
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+
+.login-button,
+.admin-button {
+  position: relative;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+  font-weight: 500;
+}
+
+.login-button {
+  background-color: #062241;
+  color: white;
+  border: none;
+  border-radius: 0px;
+}
+
+.admin-button {
+  background-color: #ffff;
+  color: black;
+  border: 2px solid black;
+
+  border-radius:0px;
+}
